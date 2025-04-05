@@ -7,6 +7,7 @@ import com.example.kotlinbackend.kotlin_backend.database.repository.NoteReposito
 import org.bson.types.ObjectId
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -19,7 +20,9 @@ class NoteController(
 ) {
 
     @PostMapping
-    fun save(body: NoteRequestDto): NoteResponseDto {
+    fun save(
+        @RequestBody body: NoteRequestDto
+    ): NoteResponseDto {
         val note = noteRepository.save(
             Note(
                 id = body.id?.let { ObjectId(body.id) } ?: ObjectId.get(),
@@ -27,7 +30,7 @@ class NoteController(
                 content = body.content,
                 color = body.color,
                 createdAt = Instant.now(),
-                ownerId = ObjectId(body.ownerId),
+                ownerId = ObjectId(),
             ),
         )
 
